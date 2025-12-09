@@ -27,7 +27,8 @@
             box-sizing: border-box;
         }
 
-        html, body {
+        html,
+        body {
             height: 100%;
         }
 
@@ -47,6 +48,9 @@
             line-height: 1.6;
             text-align: center;
             width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         header p {
@@ -58,7 +62,8 @@
             flex: 1;
             display: flex;
             justify-content: center;
-            align-items: center; /* 画面高さがある場合は中央配置 */
+            align-items: center;
+            /* 画面高さがある場合は中央配置 */
             padding: 40px 20px;
             width: 100%;
         }
@@ -171,7 +176,8 @@
         @media (max-width: 600px) {
             .content-wrapper {
                 padding: 20px 16px;
-                display: block; /* モバイルでは上詰めにする */
+                display: block;
+                /* モバイルでは上詰めにする */
             }
 
             .main-content {
