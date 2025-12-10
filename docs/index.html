@@ -79,16 +79,15 @@
             justify-content: center;
             align-items: center;
             /* 画面高さがある場合は中央配置 */
-            padding: 40px 20px;
+            padding-top: 1vw;
             width: 100%;
         }
 
         .main-content {
-            width: 90%;
+            width: 95vw;
             max-width: none;
             background: var(--bg-surface);
             border-radius: var(--radius-lg);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             padding: 48px;
         }
 
@@ -278,6 +277,58 @@
             color: rgba(255, 255, 255, 0.6);
             font-style: italic;
         }
+
+        /* PDF Card */
+        .player-card.pdf-mode {
+            background: #fff5e6;
+        }
+
+        .pdf-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .pdf-nav-btn {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .pdf-nav-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .pdf-nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #pageInfo {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .pdf-container {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: white;
+            display: flex;
+            justify-content: center;
+        }
+
+        #pdfCanvas {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 
@@ -331,6 +382,22 @@
                     </video>
                 </div>
             </div>
+
+            <!-- PDFカード -->
+            <div class="player-card pdf-mode">
+                <div class="card-header">
+                    <div class="card-icon">📄</div>
+                    <div class="card-title">資料（PDF）</div>
+                </div>
+                <div class="pdf-controls">
+                    <button id="prevPage" class="pdf-nav-btn">◀ 前へ</button>
+                    <span id="pageInfo">ページ: 1 / 1</span>
+                    <button id="nextPage" class="pdf-nav-btn">次へ ▶</button>
+                </div>
+                <div class="pdf-container">
+                    <canvas id="pdfCanvas"></canvas>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -339,6 +406,49 @@
     </footer>
 
     <script src="sources/subtitle-sync.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+        // PDF.js Worker設定
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        const pdfUrl = 'sources/hr_ai_transform.pdf';
+        let pdfDoc = null;
+        let currentPage = 1;
+        let totalPages = 0;
+        const canvas = document.getElementById('pdfCanvas');
+        const ctx = canvas.getContext('2d');
+
+        async function renderPage(pageNum) {
+            const page = await pdfDoc.getPage(pageNum);
+            const viewport = page.getViewport({ scale: 1.5 });
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+            document.getElementById('pageInfo').textContent = `ページ: ${pageNum} / ${totalPages}`;
+            document.getElementById('prevPage').disabled = pageNum <= 1;
+            document.getElementById('nextPage').disabled = pageNum >= totalPages;
+        }
+
+        pdfjsLib.getDocument(pdfUrl).promise.then(pdf => {
+            pdfDoc = pdf;
+            totalPages = pdf.numPages;
+            renderPage(1);
+        });
+
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderPage(currentPage);
+            }
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderPage(currentPage);
+            }
+        });
+    </script>
 </body>
 
 </html>
