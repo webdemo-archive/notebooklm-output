@@ -203,8 +203,12 @@
                 padding: 32px 20px;
             }
 
+            .subtitle-container {
+                width: 95%;
+                padding: 16px 16px;
+            }
+
             .subtitle-text {
-                font-size: 15px;
                 min-height: 60px;
             }
         }
@@ -226,7 +230,7 @@
         }
 
         .subtitle-text {
-            font-size: 17px;
+            font-size: clamp(14px, 4vw, 17px);
             line-height: 1.8;
             color: #ffffff;
             height: 61px;
@@ -234,6 +238,8 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
 
         .subtitle-text.anim-out {
