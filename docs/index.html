@@ -212,6 +212,9 @@
         /* 字幕表示エリア */
         .subtitle-container {
             margin-top: 16px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 80%;
             background: #1a1a1a;
             border-radius: 12px;
             padding: 20px 24px;
@@ -219,6 +222,7 @@
             box-shadow:
                 inset 2px 2px 6px rgba(0, 0, 0, 0.5),
                 inset -1px -1px 3px rgba(255, 255, 255, 0.05);
+            overflow: hidden;
         }
 
         .subtitle-text {
@@ -230,7 +234,17 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            transition: opacity 0.2s ease;
+            transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+        }
+
+        .subtitle-text.slide-out {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+
+        .subtitle-text.slide-in {
+            transform: translateY(20px);
+            opacity: 0;
         }
 
         .subtitle-text.active {
