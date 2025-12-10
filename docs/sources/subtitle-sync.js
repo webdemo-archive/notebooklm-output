@@ -73,42 +73,43 @@ function updateSubtitle() {
         const currentTime = audioPlayer.currentTime;
         const currentSubtitle = findCurrentSubtitle(subtitles, currentTime);
 
+        // 字幕が見つかった場合
         if (currentSubtitle !== null) {
             if (currentSubtitle !== lastDisplayedText && !isAnimating) {
                 isAnimating = true;
-                // スライドアウト
-                subtitleText.classList.add('slide-out');
 
+                // 1. スライドアウト開始（現在位置から上へ）
+                subtitleText.classList.remove('anim-in');
+                subtitleText.classList.add('anim-out');
+
+                // 2. アニメーション完了後(150ms)にテキスト更新してスライドイン（下から上へ）
                 setTimeout(() => {
-                    // テキスト更新
                     subtitleText.textContent = currentSubtitle;
-                    subtitleText.classList.remove('placeholder', 'slide-out');
-                    subtitleText.classList.add('active', 'slide-in');
-
-                    // 強制リフロー
-                    subtitleText.offsetHeight;
-
-                    // スライドイン
-                    subtitleText.classList.remove('slide-in');
+                    subtitleText.classList.remove('placeholder', 'anim-out');
+                    subtitleText.classList.add('active', 'anim-in');
                     lastDisplayedText = currentSubtitle;
 
+                    // アニメーション完了待ち（少し余裕を持たせる）
                     setTimeout(() => {
                         isAnimating = false;
                     }, 150);
-                }, 150);
+                }, 150); // slideOutUpのdurationに合わせる
             }
-        } else {
+        }
+        // 字幕がない場合（...表示）
+        else {
             if (lastDisplayedText !== '' && !isAnimating) {
                 isAnimating = true;
-                subtitleText.classList.add('slide-out');
 
+                // 1. スライドアウト開始
+                subtitleText.classList.remove('anim-in');
+                subtitleText.classList.add('anim-out');
+
+                // 2. アニメーション完了後にテキスト更新してスライドイン
                 setTimeout(() => {
                     subtitleText.textContent = '...';
-                    subtitleText.classList.remove('active', 'slide-out');
-                    subtitleText.classList.add('placeholder', 'slide-in');
-
-                    subtitleText.offsetHeight;
-                    subtitleText.classList.remove('slide-in');
+                    subtitleText.classList.remove('active', 'anim-out');
+                    subtitleText.classList.add('placeholder', 'anim-in');
                     lastDisplayedText = '';
 
                     setTimeout(() => {
