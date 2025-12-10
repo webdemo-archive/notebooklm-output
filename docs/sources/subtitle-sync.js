@@ -66,24 +66,55 @@ fetch('sources/hr5news_radio.srt')
     });
 
 // 字幕更新関数
+let isAnimating = false;
+
 function updateSubtitle() {
     if (!audioPlayer.paused && !audioPlayer.ended) {
         const currentTime = audioPlayer.currentTime;
         const currentSubtitle = findCurrentSubtitle(subtitles, currentTime);
 
         if (currentSubtitle !== null) {
-            if (currentSubtitle !== lastDisplayedText) {
-                subtitleText.textContent = currentSubtitle;
-                subtitleText.classList.remove('placeholder');
-                subtitleText.classList.add('active');
-                lastDisplayedText = currentSubtitle;
+            if (currentSubtitle !== lastDisplayedText && !isAnimating) {
+                isAnimating = true;
+                // スライドアウト
+                subtitleText.classList.add('slide-out');
+
+                setTimeout(() => {
+                    // テキスト更新
+                    subtitleText.textContent = currentSubtitle;
+                    subtitleText.classList.remove('placeholder', 'slide-out');
+                    subtitleText.classList.add('active', 'slide-in');
+
+                    // 強制リフロー
+                    subtitleText.offsetHeight;
+
+                    // スライドイン
+                    subtitleText.classList.remove('slide-in');
+                    lastDisplayedText = currentSubtitle;
+
+                    setTimeout(() => {
+                        isAnimating = false;
+                    }, 150);
+                }, 150);
             }
         } else {
-            if (lastDisplayedText !== '') {
-                subtitleText.textContent = '...';
-                subtitleText.classList.remove('active');
-                subtitleText.classList.add('placeholder');
-                lastDisplayedText = '';
+            if (lastDisplayedText !== '' && !isAnimating) {
+                isAnimating = true;
+                subtitleText.classList.add('slide-out');
+
+                setTimeout(() => {
+                    subtitleText.textContent = '...';
+                    subtitleText.classList.remove('active', 'slide-out');
+                    subtitleText.classList.add('placeholder', 'slide-in');
+
+                    subtitleText.offsetHeight;
+                    subtitleText.classList.remove('slide-in');
+                    lastDisplayedText = '';
+
+                    setTimeout(() => {
+                        isAnimating = false;
+                    }, 150);
+                }, 150);
             }
         }
         // 再生中は毎フレーム更新をリクエスト
