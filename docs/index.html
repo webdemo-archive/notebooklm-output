@@ -83,8 +83,8 @@
         }
 
         .main-content {
-            width: 100%;
-            max-width: 800px;
+            width: 90%;
+            max-width: none;
             background: var(--bg-surface);
             border-radius: var(--radius-lg);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
@@ -130,6 +130,7 @@
         .card-header {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 12px;
             margin-bottom: 16px;
         }
@@ -201,6 +202,45 @@
             .main-content {
                 padding: 32px 20px;
             }
+
+            .subtitle-text {
+                font-size: 15px;
+                min-height: 60px;
+            }
+        }
+
+        /* 字幕表示エリア */
+        .subtitle-container {
+            margin-top: 16px;
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px 24px;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            box-shadow:
+                inset 2px 2px 6px rgba(0, 0, 0, 0.5),
+                inset -1px -1px 3px rgba(255, 255, 255, 0.05);
+        }
+
+        .subtitle-text {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #ffffff;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: opacity 0.2s ease;
+        }
+
+        .subtitle-text.active {
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .subtitle-text.placeholder {
+            color: rgba(255, 255, 255, 0.6);
+            font-style: italic;
         }
     </style>
 </head>
@@ -209,7 +249,7 @@
     <header>
         <p>
             ※ この記事は<span class="highlight-marker">AI技術のデモンストレーション</span>のために自動で生成されたものです ※<br>
-            人間の手による編集が入っていないため、内容の正確性は保証されません。ご注意ください
+            人間の手による編集が入っていないため、<span style="color: #ff9800;">内容の正確性は保証されません。</span>ご注意ください
         </p>
     </header>
 
@@ -221,6 +261,26 @@
                 NotebookLMを使用して生成された、最新の生成AIニュースに関する解説コンテンツです。
                 動画とラジオ形式の音声で、移動中や隙間時間にも効率的に情報をキャッチアップできます。
             </p>
+
+            <!-- 音声カード -->
+            <div class="player-card audio-mode">
+                <div class="card-header">
+                    <div class="card-icon">🎧</div>
+                    <div class="card-title">音声解説（ラジオ形式）</div>
+                </div>
+                <div class="audio-container">
+                    <audio id="audioPlayer" controls preload="metadata">
+                        <source src="sources/hr5news_radio.m4a" type="audio/mp4">
+                        お使いのブラウザは音声再生に対応していません。
+                    </audio>
+                </div>
+                <!-- 字幕表示エリア -->
+                <div class="subtitle-container">
+                    <div id="subtitleText" class="subtitle-text">
+                        2025年の生成AIと人材開発
+                    </div>
+                </div>
+            </div>
 
             <!-- 動画カード -->
             <div class="player-card video-mode">
@@ -235,26 +295,14 @@
                     </video>
                 </div>
             </div>
-
-            <!-- 音声カード -->
-            <div class="player-card audio-mode">
-                <div class="card-header">
-                    <div class="card-icon">🎧</div>
-                    <div class="card-title">音声解説（ラジオ形式）</div>
-                </div>
-                <div class="audio-container">
-                    <audio controls preload="metadata">
-                        <source src="sources/hr5news_radio.m4a" type="audio/mp4">
-                        お使いのブラウザは音声再生に対応していません。
-                    </audio>
-                </div>
-            </div>
         </main>
     </div>
 
     <footer>
         <p>© Synesthesia inc.</p>
     </footer>
+
+    <script src="sources/subtitle-sync.js"></script>
 </body>
 
 </html>
