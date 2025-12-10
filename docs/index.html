@@ -229,22 +229,43 @@
             font-size: 17px;
             line-height: 1.8;
             color: #ffffff;
-            min-height: 50px;
+            height: 61px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            transition: transform 0.15s ease-out, opacity 0.15s ease-out;
         }
 
-        .subtitle-text.slide-out {
-            transform: translateY(-20px);
-            opacity: 0;
+        .subtitle-text.anim-out {
+            animation: slideOutUp 0.15s ease-in forwards;
         }
 
-        .subtitle-text.slide-in {
-            transform: translateY(20px);
-            opacity: 0;
+        .subtitle-text.anim-in {
+            animation: slideInUp 0.15s ease-out forwards;
+        }
+
+        @keyframes slideOutUp {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideInUp {
+            0% {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .subtitle-text.active {
