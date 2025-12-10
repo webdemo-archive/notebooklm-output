@@ -192,33 +192,6 @@
             margin: 0;
         }
 
-        @media (max-width: 600px) {
-            .content-wrapper {
-                padding: 8px;
-                display: block;
-            }
-
-            .main-content {
-                padding: 16px 8px;
-            }
-
-            .player-card {
-                padding: 12px 8px;
-                border-radius: 8px;
-            }
-
-            .subtitle-container {
-                width: 100%;
-                margin-left: 0;
-                margin-right: 0;
-                padding: 12px 8px;
-                border-radius: 8px;
-            }
-
-            .subtitle-text {
-                min-height: 60px;
-            }
-        }
 
         /* 字幕表示エリア */
         .subtitle-container {
@@ -342,6 +315,35 @@
         #pdfCanvas {
             max-width: 100%;
             height: auto;
+        }
+
+        /* SP表示用スタイル - 必ずデフォルトスタイルの後に配置 */
+        @media (max-width: 600px) {
+            .content-wrapper {
+                padding: 8px;
+                display: block;
+            }
+
+            .main-content {
+                padding: 16px 8px;
+            }
+
+            .player-card {
+                padding: 12px 8px;
+                border-radius: 8px;
+            }
+
+            .subtitle-container {
+                width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+                padding: 12px 8px;
+                border-radius: 8px;
+            }
+
+            .subtitle-text {
+                min-height: 60px;
+            }
         }
     </style>
 </head>
